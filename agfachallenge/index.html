@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+<div>
+<form name="frm1" onsubmit="marbleCalc(); return false" method="post">
+    <label for="input"> Agfa Challenge - Marble Machine - David Knight </label><br>
+    <input type="text" id="input" name="inputbox" placeholder="Enter Input Number">
+    <input type="submit" value="Display Marble Sequences"/>
+</form>
+<div id="sequences">
+
+</div>
+</div>
+
+</body>
+<script>
+
+
+    var form = document.forms.frm1,
+            elem = form.elements;
+
+
+    var output=[];
+
+    var colours=[];
+    colours.push('blue');
+    colours.push('green');
+    colours.push('red');
+    colours.push('yellow');
+    colours.push('orange');
+    colours.push('purple');
+    colours.push('brown');
+
+
+    function copy(o) {
+        var ret=[];
+
+        for (var i =0 ; i< o.length;i++) {
+            ret[i]=o[i];
+        }
+        return ret;
+    }
+
+    function contains(selection, colour){
+        for (var i=0;i<selection.length; i++){
+            var marble=selection[i];
+            if( marble.colours==1 && marble.colour==colour){
+                return true;
+            }
+            else if(marble.colours==2 && (marble.colour1==colour||marble.colour2==colour)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function marbleCalc()
+    {   output=[];
+        if(elem.inputbox.value<1||elem.inputbox.value>7)return;
+
+        var coloursEnd=elem.inputbox.value;
+        console.log(JSON.stringify(colours, null, 4));
+
+        var marbleSelection=[];
+        marbleSelection[0]=[];
+        for(var i= 0;i<coloursEnd;i++){
+            var marbleSel=[];
+            var marble={};
+            marble.colours=1;
+            marble.colour=colours[i];
+            marbleSel.push(marble);
+            marbleSelection[0].push(marbleSel);
+            output.push(marbleSel);
+            //console.log(JSON.stringify(marbleSel));
+
+        }
+
+        for(var i= 0;i<coloursEnd;i++){
+            for(var j= i+1;j<coloursEnd;j++){
+                var marbleSel=[];
+                var marble={};
+                marble.colours=2;
+                marble.colour1=colours[i];
+                marble.colour2=colours[j];
+                marbleSel.push(marble);
+                marbleSelection[0].push(marbleSel);
+                output.push(marbleSel);
+                //console.log(JSON.stringify(marbleSel));
+
+
+            }
+        }
+
+        for(var i= 1;i<coloursEnd;i++){
+            marbleSelection[i]=[];
+            for(var s=0; s<marbleSelection[i-1].length; s++){
+                var selection=marbleSelection[i-1][s];
+                for(var j= 0;j<coloursEnd;j++){
+                    if(contains(selection,colours[j]))continue;
+                    var marbleSel=copy(selection);
+                    var marble={};
+                    marble.colours=1;
+                    marble.colour=colours[j];
+                    marbleSel.push(marble);
+                    marbleSelection[i].push(marbleSel);
+                    output.push(marbleSel);
+                    //console.log(JSON.stringify(marbleSel));
+
+                }
+
+                for(var j= 0;j<coloursEnd;j++){
+                    for(var k= j+1;k<coloursEnd;k++){
+
+                        if(contains(selection,colours[j])||contains(selection,colours[k]))continue;
+
+                        var marbleSel=copy(selection);
+                        var marble={};
+                        marble.colours=2;
+                        marble.colour1=colours[j];
+                        marble.colour2=colours[k];
+                        marbleSel.push(marble);
+                        marbleSelection[i].push(marbleSel);
+                        output.push(marbleSel);
+                        //console.log(JSON.stringify(marbleSel));
+
+
+                    }
+                }
+
+            }
+
+        }
+
+
+        console.log(JSON.stringify(output));
+        // resize the canvas to fit a large amount of marble selections
+
+
+        drawOutput(output);
+
+
+
+    }
+    var spacing=25;
+    var size=10;
+
+    function drawSequence(sequence) {
+        var canvas = document.createElement('canvas'),
+                parDiv = document.getElementById('sequences'),
+                newDiv=document.createElement('div');
+
+        canvas.width  =  window.innerWidth;
+        canvas.height = 2*spacing;
+        canvas.style.zIndex   = 8;
+        canvas.style.position = "relative";
+
+        var ctx = canvas.getContext("2d");
+        for(var i=0; i<sequence.length; i++){
+            var circle=sequence[i];
+            console.log("Drawing circle " + JSON.stringify(circle));
+            if(circle.colours==1){
+                drawCircle(ctx, (i+1)*spacing, spacing,size, true, circle.colour);
+            }
+            else{
+                drawLeftHalfCircle(ctx,(i+1)*spacing, spacing,size,true, circle.colour1);
+                drawRightHalfCircle(ctx,(i+1)*spacing, spacing,size,true, circle.colour2);
+            }
+        }
+
+        newDiv.appendChild(canvas);
+        parDiv.appendChild(newDiv);
+    }
+
+
+    function drawOutput(output){
+        document.getElementById('sequences').innerHTML = "";
+
+        for(var i=0; i< output.length; i++){
+
+            drawSequence(output[i]);
+        }
+
+
+
+    }
+
+    function drawCircle(context,x,y,width, fill,colour) {
+        context.beginPath();
+        context.arc(x, y, width, 0, 2 * Math.PI);
+        context.closePath();
+
+        if (fill) {
+            context.fillStyle=colour;
+            context.fill()
+        }
+    }
+
+    function drawRightHalfCircle(context,x,y, size,fill,colour) {
+        context.beginPath();
+        context.arc(x, y, size, Math.PI/2,3*Math.PI/2);
+        context.closePath();
+        if (fill) {
+            context.fillStyle=colour;
+            context.fill()
+        }
+    }
+
+    function drawLeftHalfCircle(context,x,y,size, fill,colour) {
+        context.beginPath();
+        context.arc(x, y, size, 3*Math.PI/2, Math.PI/2);
+        context.closePath();
+        if (fill) {
+            context.fillStyle=colour;
+            context.fill()
+        }
+    }
+</script>
+</html>
