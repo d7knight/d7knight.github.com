@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BestFuel</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+
+
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+
+    <script>
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(-33.8688, 151.2195),
+                zoom: 13
+            };
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+            var input1 = /** @type {HTMLInputElement} */(
+                    document.getElementById('pac-input1'));
+            var input2 = /** @type {HTMLInputElement} */(
+                    document.getElementById('pac-input2'));
+            var input3 = /** @type {HTMLInputElement} */(
+                    document.getElementById('search_btn'));
+
+            var types = document.getElementById('type-selector');
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input1);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input2);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input3);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+            var autocomplete1 = new google.maps.places.Autocomplete(input1);
+            var autocomplete2 = new google.maps.places.Autocomplete(input2);
+            autocomplete1.bindTo('bounds', map);
+            autocomplete2.bindTo('bounds', map);
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+            });
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                infowindow.close();
+                marker.setVisible(false);
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    window.alert("Autocomplete's returned place contains no geometry");
+                    return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);  // Why 17? Because it looks good.
+                }
+                marker.setIcon(/** @type {google.maps.Icon} */({
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(35, 35)
+                }));
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+
+                var address = '';
+                if (place.address_components) {
+                    address = [
+                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                        (place.address_components[2] && place.address_components[2].short_name || '')
+                    ].join(' ');
+                }
+
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                infowindow.open(map, marker);
+            });
+
+            // Sets a listener on a radio button to change the filter type on Places
+            // Autocomplete.
+            function setupClickListener(id, types) {
+                var radioButton = document.getElementById(id);
+                google.maps.event.addDomListener(radioButton, 'click', function () {
+                    autocomplete.setTypes(types);
+                });
+            }
+
+            setupClickListener('changetype-all', []);
+            setupClickListener('changetype-address', ['address']);
+            setupClickListener('changetype-establishment', ['establishment']);
+            setupClickListener('changetype-geocode', ['geocode']);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+</head>
+<body>
+<input id="pac-input1" class="controls" type="text"
+       placeholder="From">
+
+<input id="pac-input2" class="controls" type="text"
+       placeholder="To">
+<input id="search_btn" type="submit" value="" class="controls">
+
+<div id="map-canvas"></div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/external/bootstrap.css">
+    <link rel="stylesheet" href="css/external/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body ng-controller="Controller">
+<div class="row">
+    <div class="col-xs-4">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="POSTAL/ZIP Code" ng-model="zip" ng-change="zip.length == 6 && getStationsForZip(zip)" />
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+                <td ng-if="loadingZipCode"><img src="images/ajax-loader.gif"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-4">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <form ng-submit="addStation(stationId)">
+                            <input type="text" class="form-control" placeholder="Station IDs" ng-model="stationId" />
+                        </form>
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+                <td ng-if="loadingSingleStation"><img src="images/ajax-loader.gif"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-4">
+        <div class="dropdown" ng-if="false">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                Sort
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Regular (Cheapest)</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Midgrade (Cheapest)</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Premium (Cheapest)</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Diesel (Cheapest)</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-responsive table-striped table-hover" ng-init="updateTable()">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th class="hidden-xs">Location</th>
+                    <th>Regular</th>
+                    <th>Midgrade</th>
+                    <th>Premium</th>
+                    <th>Diesel</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="! stationIds">
+                    <td colspan="8">
+                        <div class="text-center">Enter a ZIP code or Station ID above</div>
+                    </td>
+                </tr>
+                <tr ng-repeat="station in stations" ng-if="!loading">
+                    <td><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></td>
+                    <td><a href="{{ station.url }}" target="_blank">{{ station.name }} <span class="glyphicon glyphicon-new-window hidden-xs" aria-hidden="true"></span></a></td>
+                    <td class="hidden-xs">{{ station.address }}, {{ station.area }}</td>
+                    <td ng-repeat="fuel in station.fuels">
+                        {{ fuel.price | currency }}
+                        <span ng-if="fuel.price > 0"><small>({{ fuel.timestamp }})</small></span>
+                    </td>
+                    <td>
+                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="stations.splice($index, 1); removeStation(station.id)"></span></a>
+                    </td>
+                </tr>
+                <tr ng-if="(loading || loadingZipCode || loadingSingleStation) && stationIds">
+                    <td colspan="8">
+                        <div class="text-center"><img src="images/ajax-loader.gif"> Loading</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/external/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="js/external/bootstrap.js"></script>
+<script type="text/javascript" src="js/external/angular.js"></script>
+<script type="text/javascript" src="js/external/angular-cookies.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/controllers.js"></script>
+<script type="text/javascript" src="js/directives.js"></script>
+</body>
+</html>

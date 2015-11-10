@@ -1,0 +1,23 @@
+body {
+    margin: 10px;
+}
+
+.tight {
+    padding: 5px;
+}
+
+.row-odd {
+    background-color: #ffffff;
+}
+
+.row-even {
+    background-color: #efefef;
+}
+
+.station-box {
+    width: 300px;
+}
+
+.station-panel-heading {
+    height: 44px;
+}
