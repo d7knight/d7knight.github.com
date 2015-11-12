@@ -48,8 +48,6 @@ function initialize() {
         styles: myStyles
     };
 
-    //Regex
-    var hostnameRegexp = new RegExp('^https?://.+?/');
 
     //Custom Place Information Window, displayed after clicking on a marker
     var infowindow = new InfoBubble({
@@ -176,21 +174,7 @@ function initialize() {
 
                         }
 
-                        // The regexp isolates the first part of the URL (domain plus subdomain)
-                        // to give a short URL for displaying in the info window.
 
-                        if (place.website) {
-                            var fullUrl = place.website;
-                            var website = hostnameRegexp.exec(place.website);
-                            if (website == null) {
-                                website = 'http://' + place.website + '/';
-                                fullUrl = website;
-                            }
-                            contentString += '<tr id="iw-website-row" class="iw_table_row">' +
-                                '<td class="iw_attribute_name">Website:</td>'
-                            '<td id="iw-website">' + website + '</td>' + '</tr>';
-
-                        }
                         var photos = place.photos;
                         //if there are photos for the place, then in the info window the first photo will be displayed
                         if (photos) {
