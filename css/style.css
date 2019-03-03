@@ -289,7 +289,7 @@ footer{
 }
 
 .javascript {
-    width: 80%;
+    width: 99%;
     -moz-animation: javascript 25s ease;
     -webkit-animation: javascript 25s ease;
 }
@@ -303,7 +303,7 @@ footer{
 }
 
 .node {
-    width: 65%;
+    width: 88%;
     -moz-animation: node 25s ease;
     -webkit-animation: node 25s ease;
 }
@@ -316,7 +316,7 @@ footer{
     100% { width: 65%;  }
 }
 .mongo {
-    width: 10%;
+    width: 90%;
     -moz-animation: mongo 25s ease;
     -webkit-animation: mongo 25s ease;
 }
@@ -329,7 +329,7 @@ footer{
     100% { width: 10%;  }
 }
 .unix {
-    width: 70%;
+    width: 85%;
     -moz-animation: unix 25s ease;
     -webkit-animation: unix 25s ease;
 }
@@ -384,7 +384,7 @@ footer{
     100% { width: 80%;  }
 }
 .css {
-    width: 50%;
+    width: 88%;
     -moz-animation: css 25s ease;
     -webkit-animation: css 25s ease;
 }
@@ -397,7 +397,7 @@ footer{
     100% { width: 50%;  }
 }
 .php {
-    width: 50%;
+    width: 99%;
     -moz-animation: php 25s ease;
     -webkit-animation: php 25s ease;
 }
