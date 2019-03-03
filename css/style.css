@@ -289,23 +289,23 @@ footer{
 }
 
 .javascript {
-    width: 99%;
-    -moz-animation: javascript 5s ease;
-    -webkit-animation: javascript 5s ease;
+    width: 92%;
+    -moz-animation: javascript 10s ease;
+    -webkit-animation: javascript 10s ease;
 }
 @-moz-keyframes javascript {
     0%   { width: 0px;  }
-    100% { width: 99%;  }
+    100% { width: 92%;  }
 }
 @-webkit-keyframes javascript {
     0%   { width: 0px;  }
-    100% { width: 99%;  }
+    100% { width: 92%;  }
 }
 
 .node {
     width: 88%;
-    -moz-animation: node 5s ease;
-    -webkit-animation: node 5s ease;
+    -moz-animation: node 10s ease;
+    -webkit-animation: node 10s ease;
 }
 @-moz-keyframes node {
     0%   { width: 0px;  }
@@ -317,8 +317,8 @@ footer{
 }
 .mongo {
     width: 90%;
-    -moz-animation: mongo 5s ease;
-    -webkit-animation: mongo 5s ease;
+    -moz-animation: mongo 10s ease;
+    -webkit-animation: mongo 10s ease;
 }
 @-moz-keyframes  mongo{
     0%   { width: 0px;  }
@@ -330,8 +330,8 @@ footer{
 }
 .unix {
     width: 85%;
-    -moz-animation: unix 5s ease;
-    -webkit-animation: unix 5s ease;
+    -moz-animation: unix 10s ease;
+    -webkit-animation: unix 10s ease;
 }
 @-moz-keyframes  unix{
     0%   { width: 0px;  }
@@ -343,32 +343,32 @@ footer{
 }
 
 .mysql {
-    width: 90%;
-    -moz-animation: mysql 6s ease;
-    -webkit-animation: mysql 6s ease;
+    width: 85%;
+    -moz-animation: mysql 10s ease;
+    -webkit-animation: mysql 10s ease;
 }
 @-moz-keyframes  mysql{
     0%   { width: 0px;  }
-    100% { width: 90%;  }
+    100% { width: 85%;  }
 }
 @-webkit-keyframes  mysql{
     0%   { width: 0px;  }
-    100% { width: 90%;  }
+    100% { width: 85%;  }
 }
 
 .java {
-    width: 99%;
+    width: 90%;
     -moz-animation-direction: initial;
-    -moz-animation: java 3s ease;
-    -webkit-animation: java 3s ease;
+    -moz-animation: java 10s ease;
+    -webkit-animation: java 10s ease;
 }
 @-moz-keyframes java {
     0%   { width: 0px;  }
-    100% { width: 99%;  }
+    100% { width: 90%;  }
 }
 @-webkit-keyframes java {
     0%   { width: 0px;  }
-    100% { width: 99%;  }
+    100% { width: 90%;  }
 }
 .cplusplus {
     width: 80%;
@@ -397,43 +397,43 @@ footer{
     100% { width: 88%;  }
 }
 .php {
-    width: 99%;
-    -moz-animation: php 25s ease;
-    -webkit-animation: php 25s ease;
+    width: 86%;
+    -moz-animation: php 11s ease;
+    -webkit-animation: php 11s ease;
 }
 @-moz-keyframes php {
     0%   { width: 0px;  }
-    100% { width: 50%;  }
+    100% { width: 86%;  }
 }
 @-webkit-keyframes php {
     0%   { width: 0px;  }
-    100% { width: 50%;  }
+    100% { width: 86%;  }
 }
 .html5 {
-    width: 70%;
-    -moz-animation: html5 25s ease;
-    -webkit-animation: html5 25s ease;
+    width: 80%;
+    -moz-animation: html5 10s ease;
+    -webkit-animation: html5 10s ease;
 }
 @-moz-keyframes html5 {
     0%   { width: 0px;  }
-    100% { width: 70%;  }
+    100% { width: 80%;  }
 }
 @-webkit-keyframes html5 {
     0%   { width: 0px;  }
-    100% { width: 70%;  }
+    100% { width: 80%;  }
 }
 .jquery {
-    width: 30%;
-    -moz-animation: jquery 25s ease;
-    -webkit-animation: jquery 25s ease;
+    width: 75%;
+    -moz-animation: jquery 10s ease;
+    -webkit-animation: jquery 10s ease;
 }
 @-moz-keyframes jquery {
     0%   { width: 0px;  }
-    100% { width: 30%;  }
+    100% { width: 75%;  }
 }
 @-webkit-keyframes jquery {
     0%   { width: 0px;  }
-    100% { width: 30%;  }
+    100% { width: 75%;  }
 }
 
 
